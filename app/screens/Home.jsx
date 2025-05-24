@@ -6,6 +6,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Navbar from '../Components/Navbar';
+import Card from '../Components/Card';
 
 
 import {
@@ -47,6 +48,12 @@ const [filter , setFilter] = useState('Popular');
             <Pressable onPress={() => setFilter('Tech')} ><Text style={filter === 'Tech' ? styles.Activefilter : styles.filter}>Tech</Text> <View style={filter === 'Tech' ? styles.underline : styles.null} /> </Pressable>
             <Pressable onPress={() => setFilter('Healthy')} ><Text style={filter === 'Healthy' ? styles.Activefilter : styles.filter}>Healthy</Text> <View style={filter === 'Healthy' ? styles.underline : styles.null} /></Pressable>
             <Pressable onPress={() => setFilter('Science')} ><Text style={filter === 'Science' ? styles.Activefilter : styles.filter}>Science</Text> <View style={filter === 'Science' ? styles.underline : styles.null} /></Pressable>
+          </ScrollView>
+
+          <ScrollView style={styles.content} >
+            <View style={styles.cards} >
+            <Card />
+          </View>
           </ScrollView>
 
 
@@ -130,6 +137,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     display: 'flex',
     gap: 10,
+    maxHeight: 30,
   },
   filter:
   {
@@ -151,6 +159,24 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(0, 162, 255)',
     marginTop: 5,
     borderRadius: 50,
+  },
+  content:
+  {
+    marginTop: 10,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 10,
+    backgroundColor: 'aqua',
+    height: '67%',
+    width: '100%',
+  },
+  cards:
+  {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 10,
+    backgroundColor: 'aqua',
+    height: 200,
   },
 
 });
