@@ -1,4 +1,12 @@
 {
   "name": "NewsWatch",
-  "displayName": "NewsWatch"
+  "displayName": "NewsWatch",
+  "expo": {
+    "name": "NewsWatch",
+    "slug": "NewsWatch",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
 }
