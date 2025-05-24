@@ -64,6 +64,7 @@ const navigation = useNavigation();
               placeholder="Password"
               placeholderTextColor={'rgb(138, 136, 136)'}
               style={styles.input}
+              secureTextEntry={true}
               keyboardType={'password'}
             />
           </View>

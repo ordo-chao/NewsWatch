@@ -1,10 +1,5 @@
 import { StyleSheet, Text, View, StatusBar , TextInput } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import React from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import Feather from 'react-native-vector-icons/Feather';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {
   useNavigation,
@@ -27,50 +22,41 @@ const navigation = useNavigation();
 
           <View style={styles.form} >
             <View>
-              <Text style={styles.label} >Username</Text>
+              <Text style={styles.label} >Enter your Email</Text>
               <TextInput
               style={styles.input}
+              keyboardType={'email-address'}
             />
             </View>
             <View>
-              <Text style={styles.label} >Email</Text>
+              <Text style={styles.label} >Verification Code</Text>
               <TextInput
               style={styles.input}
               keyboardType={'numeric'}
             />
             </View>
             <View>
-              <Text style={styles.label} >Password</Text>
+              <Text style={styles.label} >Enter New Password</Text>
               <TextInput
               style={styles.input}
-              secureTextEntry={true}
               keyboardType={'password'}
+              secureTextEntry={true}
             />
-            <Text style={styles.forgot} onPress={() => navigation.navigate('Verify')}  >Forgot Password?</Text>
+            </View>
+                        <View>
+              <Text style={styles.label} >Re Enter your Password</Text>
+              <TextInput
+              style={styles.input}
+              keyboardType={'password'}
+              secureTextEntry={true}
+            />
             </View>
           </View>
 
           <View style={styles.button} >
-            <Text style={styles.buttonText} onPress={() => navigation.navigate('City')} >Sign In</Text>
+            <Text style={styles.buttonText} onPress={() => navigation.navigate('SignIn')} >Sign In</Text>
           </View>
 
-          <View style={styles.or} >
-            <View style={styles.line} />
-            <Text style={styles.orText} >or sign in with </Text>
-            <View style={styles.line} />
-          </View>
-
-          <View style={styles.social} >
-            <View style={styles.icon} ><Fontisto name="email" size={20} color="rgb(0, 102, 255)" /></View>
-            <View style={styles.icon}><FontAwesome name="google" size={20} color="rgb(0, 102, 255)" /></View>
-            <View style={styles.icon}><FontAwesome name="facebook" size={20} color="rgb(0, 102, 255)" /></View>
-            <View style={styles.icon}><Feather name="twitter" size={20} color="rgb(0, 102, 255)" /></View>
-            <View style={styles.icon}><AntDesign name="apple-o" size={20} color="rgb(0, 102, 255)" /></View>
-          </View>
-
-          <View style={styles.agree} >
-            <Text style={styles.agreeText} >Don't have an account? <Text style={styles.terms} onPress={() => navigation.navigate('Signup')} >Register</Text></Text>
-          </View>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -90,6 +76,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 40,
+    marginBottom: 40,
   },
   logoText: {
     fontSize: 35,
@@ -115,7 +102,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     gap: 30,
     marginTop: 20,
-    maxHeight: 300,
+    maxHeight: 400,
   },
   input: {
     height: 40,

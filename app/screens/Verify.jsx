@@ -44,7 +44,7 @@ const navigation = useNavigation();
           </View>
 
           <View style={styles.button} >
-            <Text style={styles.buttonText} >Verify</Text>
+            <Text style={styles.buttonText} onPress={() => navigation.navigate('Password')} >Verify</Text>
           </View>
 
       </SafeAreaView>
@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 40,
+    marginBottom: 40,
   },
   logoText: {
     fontSize: 35,
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 0,
+    marginTop: 20,
     marginBottom: 30,
   },
   buttonText: {
