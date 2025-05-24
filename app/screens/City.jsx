@@ -51,7 +51,7 @@ const [city, setCity] = useState('');
           </ScrollView>
 
            <View style={styles.button} >
-                      <Text style={styles.buttonText} onPress={() => navigation.navigate('SignIn')} >Next</Text>
+                      <Text style={styles.buttonText} onPress={() => navigation.navigate('Home')} >Next</Text>
                     </View>
       </SafeAreaView>
     </SafeAreaProvider>
