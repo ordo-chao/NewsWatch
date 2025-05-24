@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View, StatusBar , TextInput } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import RadioGroup from 'react-native-radio-buttons-group';
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Feather from 'react-native-vector-icons/Feather';
@@ -11,25 +10,8 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 
-
-
 const App = () => {
 const navigation = useNavigation();
-  const radioButtons = useMemo(() => ([
-        {
-            id: '1', // acts as primary key, should be unique and non-empty string
-            label: 'Media Reporter',
-            value: 'Reporter',
-            size : 15,
-        },
-        {
-            id: '2',
-            label: 'Visitor',
-            value: 'Visitor',
-            size : 15,
-        },
-    ]), []);
-    const [selectedId, setSelectedId] = useState();
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
@@ -44,42 +26,36 @@ const navigation = useNavigation();
           </View>
 
           <View style={styles.form} >
-            <TextInput
-              placeholder="Username"
-              placeholderTextColor={'rgb(138, 136, 136)'}
+            <View>
+              <Text style={styles.label} >Username</Text>
+              <TextInput
               style={styles.input}
             />
-                        <TextInput
-              placeholder="Email"
-              placeholderTextColor={'rgb(138, 136, 136)'}
-              style={styles.input}
-            />
-            <TextInput
-              placeholder="Number"
-              placeholderTextColor={'rgb(138, 136, 136)'}
+            </View>
+            <View>
+              <Text style={styles.label} >Email</Text>
+              <TextInput
               style={styles.input}
               keyboardType={'numeric'}
             />
-            <TextInput
-              placeholder="Password"
-              placeholderTextColor={'rgb(138, 136, 136)'}
+            </View>
+            <View>
+              <Text style={styles.label} >Password</Text>
+              <TextInput
               style={styles.input}
               keyboardType={'password'}
             />
-          </View>
-          <View style={styles.userType} >
-            <Text style={styles.userTypeText} >I am a</Text>
-            <View>
-               <RadioGroup radioButtons={radioButtons} onPress={setSelectedId} selectedId={selectedId} layout={'row'} />
+            <Text style={styles.forgot} onPress={() => navigation.navigate('Verify')}  >Forgot Password?</Text>
             </View>
           </View>
+
           <View style={styles.button} >
-            <Text style={styles.buttonText} onPress={() => navigation.navigate('SignIn')} >Sign Up</Text>
+            <Text style={styles.buttonText} >Sign Up</Text>
           </View>
 
           <View style={styles.or} >
             <View style={styles.line} />
-            <Text style={styles.orText} >or sign up with </Text>
+            <Text style={styles.orText} >or sign in with </Text>
             <View style={styles.line} />
           </View>
 
@@ -92,7 +68,7 @@ const navigation = useNavigation();
           </View>
 
           <View style={styles.agree} >
-            <Text style={styles.agreeText} >By signing up you agree to NewsWatch you are accepting our <Text style={styles.terms} >terms and conditions</Text></Text>
+            <Text style={styles.agreeText} >Don't have an account? <Text style={styles.terms} onPress={() => navigation.navigate('Signup')} >Register</Text></Text>
           </View>
       </SafeAreaView>
     </SafeAreaProvider>
@@ -138,7 +114,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     gap: 30,
     marginTop: 20,
-    maxHeight: 350,
+    maxHeight: 300,
   },
   input: {
     height: 40,
@@ -150,6 +126,8 @@ const styles = StyleSheet.create({
     paddingLeft: 0,
     color: 'black',
     fontSize: 15,
+    marginTop: 0,
+    marginBottom: 10,
   },
   userType: {
     width: 300,
@@ -166,8 +144,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 15,
-    marginBottom: 10,
+    marginTop: 30,
+    marginBottom: 30,
   },
   buttonText: {
     fontSize: 15,
@@ -191,6 +169,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 10,
     marginTop: 10,
+    marginBottom: 10,
   },
   orText:
   {
@@ -234,6 +213,20 @@ const styles = StyleSheet.create({
   terms: {
     fontWeight: 'bold',
   },
+  label:
+  {
+    fontSize: 15,
+    fontWeight: 'light',
+    color: 'rgb(83, 83, 83)',
+    marginLeft: 10,
+  },
+  forgot: {
+    fontSize: 12,
+    fontWeight: 'light',
+    color: 'rgb(83, 83, 83)',
+    marginLeft: 10,
+    textAlign: 'right',
+  }
 });
 
 export default App;

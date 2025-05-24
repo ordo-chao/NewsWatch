@@ -1,35 +1,14 @@
 import { StyleSheet, Text, View, StatusBar , TextInput } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import RadioGroup from 'react-native-radio-buttons-group';
-import React, { useMemo, useState } from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import Feather from 'react-native-vector-icons/Feather';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import React from 'react';
+
 
 import {
   useNavigation,
 } from '@react-navigation/native';
 
-
-
 const App = () => {
 const navigation = useNavigation();
-  const radioButtons = useMemo(() => ([
-        {
-            id: '1', // acts as primary key, should be unique and non-empty string
-            label: 'Media Reporter',
-            value: 'Reporter',
-            size : 15,
-        },
-        {
-            id: '2',
-            label: 'Visitor',
-            value: 'Visitor',
-            size : 15,
-        },
-    ]), []);
-    const [selectedId, setSelectedId] = useState();
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
@@ -44,56 +23,30 @@ const navigation = useNavigation();
           </View>
 
           <View style={styles.form} >
-            <TextInput
-              placeholder="Username"
-              placeholderTextColor={'rgb(138, 136, 136)'}
+            <View>
+              <Text style={styles.label} >Enter your Email</Text>
+              <TextInput
               style={styles.input}
+              keyboardType={'email-address'}
             />
-                        <TextInput
-              placeholder="Email"
-              placeholderTextColor={'rgb(138, 136, 136)'}
-              style={styles.input}
-            />
-            <TextInput
-              placeholder="Number"
-              placeholderTextColor={'rgb(138, 136, 136)'}
+            <Text style={styles.red} >Please check your email, and enter the verification code</Text>
+            </View>
+            <View>
+              <Text style={styles.label} >Verification Code</Text>
+              <TextInput
               style={styles.input}
               keyboardType={'numeric'}
             />
-            <TextInput
-              placeholder="Password"
-              placeholderTextColor={'rgb(138, 136, 136)'}
-              style={styles.input}
-              keyboardType={'password'}
-            />
-          </View>
-          <View style={styles.userType} >
-            <Text style={styles.userTypeText} >I am a</Text>
-            <View>
-               <RadioGroup radioButtons={radioButtons} onPress={setSelectedId} selectedId={selectedId} layout={'row'} />
+            <Text style={styles.resend} >Resend OTP</Text>
+            <Text style={styles.red} >Please enter the verification code</Text>
+            <Text style={styles.green} >Your OTP has been sent</Text>
             </View>
           </View>
+
           <View style={styles.button} >
-            <Text style={styles.buttonText} onPress={() => navigation.navigate('SignIn')} >Sign Up</Text>
+            <Text style={styles.buttonText} >Verify</Text>
           </View>
 
-          <View style={styles.or} >
-            <View style={styles.line} />
-            <Text style={styles.orText} >or sign up with </Text>
-            <View style={styles.line} />
-          </View>
-
-          <View style={styles.social} >
-            <View style={styles.icon} ><Fontisto name="email" size={20} color="rgb(0, 102, 255)" /></View>
-            <View style={styles.icon}><FontAwesome name="google" size={20} color="rgb(0, 102, 255)" /></View>
-            <View style={styles.icon}><FontAwesome name="facebook" size={20} color="rgb(0, 102, 255)" /></View>
-            <View style={styles.icon}><Feather name="twitter" size={20} color="rgb(0, 102, 255)" /></View>
-            <View style={styles.icon}><AntDesign name="apple-o" size={20} color="rgb(0, 102, 255)" /></View>
-          </View>
-
-          <View style={styles.agree} >
-            <Text style={styles.agreeText} >By signing up you agree to NewsWatch you are accepting our <Text style={styles.terms} >terms and conditions</Text></Text>
-          </View>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -138,7 +91,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     gap: 30,
     marginTop: 20,
-    maxHeight: 350,
+    maxHeight: 250,
   },
   input: {
     height: 40,
@@ -150,6 +103,8 @@ const styles = StyleSheet.create({
     paddingLeft: 0,
     color: 'black',
     fontSize: 15,
+    marginTop: 0,
+    marginBottom: 10,
   },
   userType: {
     width: 300,
@@ -166,8 +121,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 15,
-    marginBottom: 10,
+    marginTop: 0,
+    marginBottom: 30,
   },
   buttonText: {
     fontSize: 15,
@@ -191,6 +146,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 10,
     marginTop: 10,
+    marginBottom: 10,
   },
   orText:
   {
@@ -233,6 +189,33 @@ const styles = StyleSheet.create({
   },
   terms: {
     fontWeight: 'bold',
+  },
+  label:
+  {
+    fontSize: 15,
+    fontWeight: 'light',
+    color: 'rgb(83, 83, 83)',
+    marginLeft: 10,
+  },
+  red: {
+    fontSize: 10,
+    fontWeight: 'light',
+    color: 'rgb(243, 125, 125)',
+    marginLeft: 10,
+  },
+  green:
+  {
+    fontSize: 10,
+    fontWeight: 'light',
+    color: 'rgb(118, 240, 118)',
+    marginLeft: 10,
+  },
+  resend: {
+    fontSize: 10,
+    fontWeight: 'light',
+    color: 'rgb(83, 83, 83)',
+    marginLeft: 10,
+    textAlign: 'right',
   },
 });
 
