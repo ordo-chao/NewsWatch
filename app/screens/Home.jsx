@@ -7,6 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Navbar from '../Components/Navbar';
 import Card from '../Components/Card';
+import Poll from '../Components/Poll';
 
 
 import {
@@ -54,6 +55,7 @@ const [filter , setFilter] = useState('Popular');
             <View style={styles.cards} >
             <Card />
           </View>
+          <Poll />
           </ScrollView>
 
 
@@ -166,7 +168,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     gap: 10,
-    backgroundColor: 'aqua',
     height: '67%',
     width: '100%',
   },
@@ -175,7 +176,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     gap: 10,
-    backgroundColor: 'aqua',
     height: 200,
   },
 
