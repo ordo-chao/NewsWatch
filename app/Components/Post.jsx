@@ -1,10 +1,23 @@
-import { StyleSheet, Text, View, ImageBackground, Image } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Image } from 'react-native';
+import VideoPlayer from 'react-native-video-player';
+import React, { useRef } from 'react';
+const { width } = Dimensions.get('window');
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-const app = () => {
+import PropTypes from 'prop-types';
+import {
+  useNavigation,
+} from '@react-navigation/native';
+
+
+const App = (props) => {
+  const navigation = useNavigation();
+    const playerRef = useRef(null);
+    console.log(props.isVideo);
+
   const limitWords = (text, limit) => {
     const words = text.trim().split(/\s+/);
     return words.slice(0, limit).join(' ') + (words.length > limit ? '...' : '');
@@ -14,7 +27,23 @@ There is a collage of large headlines and pictures to attract site visitors’ a
 
   return (
     <View source={require('../../Images/News.jpeg')} style={styles.container}>
-      <Image source={require('../../Images/News.jpeg')} style={styles.image} />
+      {props.isVideo ?
+      <VideoPlayer
+        ref={playerRef}
+        endWithThumbnail
+        thumbnail={{
+          uri: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg',
+        }}
+        source={{
+          uri: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+        }}
+        onError={(e) => console.log('Video error:', e)}
+        showDuration={true}
+        autoplay={false}     // change to true if you want auto-play
+        loop={false}         // change to true to loop video
+        style={styles.video} // custom styles for the video player
+      /> : <Image source={require('../../Images/News.jpeg')} style={styles.image} />
+      }
       <View style={styles.title} >
         <Text style={styles.titleText} >technology, science, entertainment</Text>
         <SimpleLineIcons name="options-vertical" size={12} color="black" />
@@ -24,7 +53,7 @@ There is a collage of large headlines and pictures to attract site visitors’ a
         <Text style={styles.personText} >Ordo Chao</Text>
         <MaterialIcons name="verified" size={15} color="rgb(0, 162, 255)" />
       </View>
-      <Text style={styles.description}>
+      <Text style={styles.description} onPress={() => navigation.navigate('Blog')} >
         {limitWords(fullText, 37)}
         <Text style={styles.read}> Read more</Text>
       </Text>
@@ -143,7 +172,17 @@ const styles = StyleSheet.create(
       height: 5,
       borderRadius: 5,
       backgroundColor: 'black',
-    }
+    },
+      video: {
+    width: width - 20,  // full width minus some padding
+    height: (width - 20) * (9 / 16), // 16:9 aspect ratio
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
   });
 
-export default app;
+App.propTypes = {
+  isVideo: PropTypes.bool.isRequired,
+};
+
+export default App;

@@ -9,6 +9,7 @@ import Verify from './screens/Verify';
 import Password from './screens/Password';
 import City from './screens/City';
 import Home from './screens/Home';
+import Blog from './screens/Blog';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,7 @@ const Layout = () => {
         <Stack.Screen name="Password" component={Password} />
         <Stack.Screen name="City" component={City} />
         <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Blog" component={Blog} />
       </Stack.Navigator>
     </NavigationContainer>
   );

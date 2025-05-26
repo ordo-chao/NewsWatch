@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, StatusBar, TextInput, Pressable, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Pressable, ScrollView } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import React, { useState } from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -9,8 +9,6 @@ import Navbar from '../Components/Navbar';
 import Card from '../Components/Card';
 import Poll from '../Components/Poll';
 import Post from '../Components/Post';
-import VideoPost from '../Components/VideoPost';
-
 
 import {
   useNavigation,
@@ -57,10 +55,9 @@ const App = () => {
           <View style={styles.cards} >
             <Card />
           </View>
-          <Poll />
-          <Post />
-          <Post />
-          <VideoPost />
+          <Poll isVideo={false}  />
+          <Post isVideo={false} />
+          <Post isVideo={true} />
         </ScrollView>
 
 
