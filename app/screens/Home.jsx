@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View, StatusBar , TextInput , Pressable , ScrollView } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, TextInput, Pressable, ScrollView } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import React , { useState } from 'react';
+import React, { useState } from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -8,6 +8,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Navbar from '../Components/Navbar';
 import Card from '../Components/Card';
 import Poll from '../Components/Poll';
+import Post from '../Components/Post';
+import VideoPost from '../Components/VideoPost';
 
 
 import {
@@ -15,8 +17,8 @@ import {
 } from '@react-navigation/native';
 
 const App = () => {
-const navigation = useNavigation();
-const [filter , setFilter] = useState('Popular');
+  const navigation = useNavigation();
+  const [filter, setFilter] = useState('Popular');
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
@@ -25,41 +27,44 @@ const [filter , setFilter] = useState('Popular');
           backgroundColor="black"
           translucent={true}
         />
-          <View style={styles.header} >
-            <View style={styles.left} >
-              <Entypo name="menu" size={25} color="rgb(0, 162, 255)" />
-                <Pressable onPress={() => navigation.navigate('City')} style={styles.location} >
-                  <Entypo name="location-pin" size={20} color="black" />
-                  <Text style={styles.locationText} >G.T Road, Kolkata</Text>
-                </Pressable>
-              </View>
-              <View style={styles.right} >
-                <Pressable style={styles.star} >
-                <View style={styles.starIcon} ><AntDesign name="star" size={15} color="yellow" /></View>
-                <Text style={styles.starText} >599</Text>
-              </Pressable>
-                <Ionicons name="notifications-sharp" size={25} color="rgb(0, 162, 255)" />
-              </View>
+        <View style={styles.header} >
+          <View style={styles.left} >
+            <Entypo name="menu" size={25} color="rgb(0, 162, 255)" />
+            <Pressable onPress={() => navigation.navigate('City')} style={styles.location} >
+              <Entypo name="location-pin" size={20} color="black" />
+              <Text style={styles.locationText} >G.T Road, Kolkata</Text>
+            </Pressable>
           </View>
+          <View style={styles.right} >
+            <Pressable style={styles.star} >
+              <View style={styles.starIcon} ><AntDesign name="star" size={15} color="yellow" /></View>
+              <Text style={styles.starText} >599</Text>
+            </Pressable>
+            <Ionicons name="notifications-sharp" size={25} color="rgb(0, 162, 255)" />
+          </View>
+        </View>
 
-          <ScrollView style={styles.filters} horizontal={true} >
-            <Pressable onPress={() => setFilter('Popular')} ><Text style={filter === 'Popular' ? styles.Activefilter : styles.filter} >Popular</Text> <View style={filter === 'Popular' ? styles.underline : styles.null} /></Pressable>
-            <Pressable onPress={() => setFilter('All')} ><Text style={filter === 'All' ? styles.Activefilter : styles.filter}>All</Text> <View style={filter === 'All' ? styles.underline : styles.null} /> </Pressable>
-            <Pressable onPress={() => setFilter('Politics')} ><Text style={filter === 'Politics' ? styles.Activefilter : styles.filter}>Politics</Text> <View style={filter === 'Politics' ? styles.underline : styles.null} /></Pressable>
-            <Pressable onPress={() => setFilter('Tech')} ><Text style={filter === 'Tech' ? styles.Activefilter : styles.filter}>Tech</Text> <View style={filter === 'Tech' ? styles.underline : styles.null} /> </Pressable>
-            <Pressable onPress={() => setFilter('Healthy')} ><Text style={filter === 'Healthy' ? styles.Activefilter : styles.filter}>Healthy</Text> <View style={filter === 'Healthy' ? styles.underline : styles.null} /></Pressable>
-            <Pressable onPress={() => setFilter('Science')} ><Text style={filter === 'Science' ? styles.Activefilter : styles.filter}>Science</Text> <View style={filter === 'Science' ? styles.underline : styles.null} /></Pressable>
-          </ScrollView>
+        <ScrollView style={styles.filters} horizontal={true} >
+          <Pressable onPress={() => setFilter('Popular')} ><Text style={filter === 'Popular' ? styles.Activefilter : styles.filter} >Popular</Text> <View style={filter === 'Popular' ? styles.underline : styles.null} /></Pressable>
+          <Pressable onPress={() => setFilter('All')} ><Text style={filter === 'All' ? styles.Activefilter : styles.filter}>All</Text> <View style={filter === 'All' ? styles.underline : styles.null} /> </Pressable>
+          <Pressable onPress={() => setFilter('Politics')} ><Text style={filter === 'Politics' ? styles.Activefilter : styles.filter}>Politics</Text> <View style={filter === 'Politics' ? styles.underline : styles.null} /></Pressable>
+          <Pressable onPress={() => setFilter('Tech')} ><Text style={filter === 'Tech' ? styles.Activefilter : styles.filter}>Tech</Text> <View style={filter === 'Tech' ? styles.underline : styles.null} /> </Pressable>
+          <Pressable onPress={() => setFilter('Healthy')} ><Text style={filter === 'Healthy' ? styles.Activefilter : styles.filter}>Healthy</Text> <View style={filter === 'Healthy' ? styles.underline : styles.null} /></Pressable>
+          <Pressable onPress={() => setFilter('Science')} ><Text style={filter === 'Science' ? styles.Activefilter : styles.filter}>Science</Text> <View style={filter === 'Science' ? styles.underline : styles.null} /></Pressable>
+        </ScrollView>
 
-          <ScrollView style={styles.content} >
-            <View style={styles.cards} >
+        <ScrollView style={styles.content} >
+          <View style={styles.cards} >
             <Card />
           </View>
           <Poll />
-          </ScrollView>
+          <Post />
+          <Post />
+          <VideoPost />
+        </ScrollView>
 
 
-      <Navbar />
+        <Navbar />
       </SafeAreaView>
     </SafeAreaProvider>
   );
