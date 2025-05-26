@@ -5,30 +5,34 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useState } from 'react';
+import {
+  useNavigation,
+} from '@react-navigation/native';
 const App = () => {
   const [options , setOptions] = useState('Home');
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <Pressable style={styles.option} onPress={() => setOptions('Home')}  >
+      <Pressable style={styles.option} onPress={() => {setOptions('Home'); navigation.navigate('Home');}}  >
         <View style={options === 'Home' ? styles.underline : styles.null} />
         <Entypo name="home" size={20} color={options === 'Home' ? 'rgb(0, 162, 255)' : 'black'} />
         <Text style={options === 'Home' ? styles.text : styles.inactiveText} >Home</Text>
         </Pressable>
-      <Pressable style={styles.option} onPress={() => setOptions('Search')}  >
+      <Pressable style={styles.option} onPress={() => {setOptions('Search'); navigation.navigate('Search');}}  >
         <View style={options === 'Search' ? styles.underline : styles.null} />
         <EvilIcons name="search" size={25} color={options === 'Search' ? 'rgb(0, 162, 255)' : 'black'} />
         <Text style={options === 'Search' ? styles.text : styles.inactiveText} >Search</Text>
         </Pressable>
-      <Pressable style={styles.plus} onPress={() => setOptions('Add')}  >
+      <Pressable style={styles.plus} onPress={() => {setOptions('Add'); navigation.navigate('Add');}}  >
         <View style={styles.add} ><FontAwesome name="plus" size={20} color="white" /></View>
         <Text style={options === 'Add' ? styles.text : styles.inactiveText} >Add Post</Text>
         </Pressable>
-      <Pressable style={styles.option} onPress={() => setOptions('Post')}  >
+      <Pressable style={styles.option} onPress={() => {setOptions('Post'); navigation.navigate('Post');}}  >
         <View style={options === 'Post' ? styles.underline : styles.null} />
         <MaterialCommunityIcons name="post" size={20} color={options === 'Post' ? 'rgb(0, 162, 255)' : 'black'} />
         <Text style={options === 'Post' ? styles.text : styles.inactiveText} >Post</Text>
         </Pressable>
-      <Pressable style={styles.option} onPress={() => setOptions('Profile')}  >
+      <Pressable style={styles.option} onPress={() => {setOptions('Profile'); navigation.navigate('Profile');}}  >
         <View style={options === 'Profile' ? styles.underline : styles.null} />
         <MaterialCommunityIcons name="face-man-profile" size={20} color={options === 'Profile' ? 'rgb(0, 162, 255)' : 'black'} />
         <Text style={options === 'Profile' ? styles.text : styles.inactiveText} >Profile</Text>

@@ -17,6 +17,7 @@ import {
 const App = () => {
   const navigation = useNavigation();
   const [filter, setFilter] = useState('Popular');
+  const [notifications, setNotifications] = useState(false);
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
@@ -27,7 +28,7 @@ const App = () => {
         />
         <View style={styles.header} >
           <View style={styles.left} >
-            <Entypo name="menu" size={25} color="rgb(0, 162, 255)" />
+            <Pressable onPress={() => navigation.navigate('Settings')} ><Entypo name="menu" size={25} color="rgb(0, 162, 255)" /></Pressable>
             <Pressable onPress={() => navigation.navigate('City')} style={styles.location} >
               <Entypo name="location-pin" size={20} color="black" />
               <Text style={styles.locationText} >G.T Road, Kolkata</Text>
@@ -38,7 +39,7 @@ const App = () => {
               <View style={styles.starIcon} ><AntDesign name="star" size={15} color="yellow" /></View>
               <Text style={styles.starText} >599</Text>
             </Pressable>
-            <Ionicons name="notifications-sharp" size={25} color="rgb(0, 162, 255)" />
+           <Pressable onPress={() => setNotifications(!notifications)} > <Ionicons name={notifications ? 'notifications-sharp' : 'notifications-outline' }size={25} color="rgb(0, 162, 255)" /></Pressable>
           </View>
         </View>
 
