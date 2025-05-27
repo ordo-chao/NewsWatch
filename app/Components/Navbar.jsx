@@ -27,7 +27,7 @@ const [options , setOptions] = useState(currentRouteName);
         <EvilIcons name="search" size={25} color={options === 'Search' ? 'rgb(0, 162, 255)' : 'black'} />
         <Text style={options === 'Search' ? styles.text : styles.inactiveText} >Search</Text>
         </Pressable>
-      <Pressable style={styles.plus} onPress={() => {setOptions('Add'); navigation.navigate('Add');}}  >
+      <Pressable style={styles.plus} onPress={() => {setOptions('Add'); navigation.navigate('AddPost');}}  >
         <View style={styles.add} ><FontAwesome name="plus" size={20} color="white" /></View>
         <Text style={options === 'Add' ? styles.text : styles.inactiveText} >Add Post</Text>
         </Pressable>

@@ -12,6 +12,7 @@ import Home from './screens/Home';
 import Blog from './screens/Blog';
 import Settings from './screens/Settings';
 import Search from './screens/Search';
+import AddPost from './screens/AddPost';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +29,7 @@ const Layout = () => {
         <Stack.Screen name="Blog" component={Blog} />
         <Stack.Screen name="Settings" component={Settings} />
         <Stack.Screen name="Search" component={Search} />
+        <Stack.Screen name="AddPost" component={AddPost} />
       </Stack.Navigator>
     </NavigationContainer>
   );
