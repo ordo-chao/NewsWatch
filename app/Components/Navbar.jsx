@@ -1,16 +1,20 @@
-import { StyleSheet, Text, View, StatusBar , TextInput , Pressable } from 'react-native';
+import { StyleSheet, Text, View , Pressable } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useState } from 'react';
 import {
   useNavigation,
+  useNavigationState,
 } from '@react-navigation/native';
 const App = () => {
-  const [options , setOptions] = useState('Home');
   const navigation = useNavigation();
+  const currentRouteName = useNavigationState((state) => {
+  const route = state.routes[state.index];
+  return route.name;
+});
+const [options , setOptions] = useState(currentRouteName);
   return (
     <View style={styles.container}>
       <Pressable style={styles.option} onPress={() => {setOptions('Home'); navigation.navigate('Home');}}  >
@@ -30,7 +34,7 @@ const App = () => {
       <Pressable style={styles.option} onPress={() => {setOptions('Post'); navigation.navigate('Post');}}  >
         <View style={options === 'Post' ? styles.underline : styles.null} />
         <MaterialCommunityIcons name="post" size={20} color={options === 'Post' ? 'rgb(0, 162, 255)' : 'black'} />
-        <Text style={options === 'Post' ? styles.text : styles.inactiveText} >Post</Text>
+        <Text style={options === 'Post' ? styles.text : styles.inactiveText} >Posts</Text>
         </Pressable>
       <Pressable style={styles.option} onPress={() => {setOptions('Profile'); navigation.navigate('Profile');}}  >
         <View style={options === 'Profile' ? styles.underline : styles.null} />

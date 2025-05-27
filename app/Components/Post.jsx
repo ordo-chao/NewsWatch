@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View, Dimensions, Image } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Image ,Pressable } from 'react-native';
 import VideoPlayer from 'react-native-video-player';
-import React, { useRef } from 'react';
+import React, { useRef , useState } from 'react';
 const { width } = Dimensions.get('window');
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -16,7 +16,8 @@ import {
 const App = (props) => {
   const navigation = useNavigation();
     const playerRef = useRef(null);
-    console.log(props.isVideo);
+    const [isLike, setLike] = useState(false);
+    const [isComment, setComment] = useState(false);
 
   const limitWords = (text, limit) => {
     const words = text.trim().split(/\s+/);
@@ -59,8 +60,8 @@ There is a collage of large headlines and pictures to attract site visitors’ a
       </Text>
       <View style={styles.bottom} >
         <View style={styles.icons} >
-          <AntDesign name="heart" size={20} color="rgb(0, 162, 255)" />
-          <FontAwesome name="comment-o" size={20} color="rgb(0, 162, 255)" />
+          <Pressable onPress={() => setLike(!isLike)} ><AntDesign name={isLike ? 'heart' : 'hearto'} size={20} color={isLike ? 'red' : 'rgb(0, 162, 255)'} /></Pressable>
+          <Pressable onPress={() => setComment(!isComment)} ><FontAwesome name={isComment ? 'comment' : 'comment-o'} size={20} color={isComment ? 'rgb(0, 255, 21)' : 'rgb(0, 162, 255)'} /></Pressable>
           <MaterialCommunityIcons name="share-outline" size={20} color="rgb(0, 162, 255)" />
           <View style={styles.sponsor} >
             <MaterialCommunityIcons name="bullhorn-outline" size={20} color="rgb(247, 191, 108)" />
