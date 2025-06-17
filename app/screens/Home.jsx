@@ -3,7 +3,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import React, { useState } from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import Navbar from '../Components/Navbar';
 import Card from '../Components/Card';
@@ -28,7 +28,7 @@ const App = () => {
         />
         <View style={styles.header} >
           <View style={styles.left} >
-            <Pressable onPress={() => navigation.navigate('Settings')} ><Entypo name="menu" size={25} color="rgb(0, 162, 255)" /></Pressable>
+            <Pressable><Entypo name="menu" size={25} color="rgb(0, 162, 255)" /></Pressable>
             <Pressable onPress={() => navigation.navigate('City')} style={styles.location} >
               <Entypo name="location-pin" size={20} color="black" />
               <Text style={styles.locationText} >G.T Road, Kolkata</Text>
@@ -39,7 +39,7 @@ const App = () => {
               <View style={styles.starIcon} ><AntDesign name="star" size={15} color="yellow" /></View>
               <Text style={styles.starText} >599</Text>
             </Pressable>
-           <Pressable onPress={() => setNotifications(!notifications)} > <Ionicons name={notifications ? 'notifications-sharp' : 'notifications-outline' }size={25} color="rgb(0, 162, 255)" /></Pressable>
+           <Pressable onPress={() => navigation.navigate('Chats')} > <MaterialIcons name="message" size={25} color="rgb(0, 162, 255)" /></Pressable>
           </View>
         </View>
 

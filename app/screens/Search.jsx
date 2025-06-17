@@ -27,45 +27,45 @@ const App = () => {
           <EvilIcons name="search" size={20} color="black" style={styles.searchIcon} />
         </View>
 
-      <ScrollView style={styles.content} >
-                <View style={styles.popular} >
-          <View style={styles.header} >
-            <Text style={styles.headerText} >Popular Tags</Text>
-            <Text style={styles.View} >View All</Text>
+        <ScrollView style={styles.content} >
+          <View style={styles.popular} >
+            <View style={styles.header} >
+              <Text style={styles.headerText} >Popular Tags</Text>
+              <Text style={styles.View} >View All</Text>
+            </View>
+            <View style={styles.tags} >
+              <Text style={styles.tag} >#Friday</Text>
+              <Text style={styles.tag} >#Saturday</Text>
+              <Text style={styles.tag}>#Sunday</Text>
+              <Text style={styles.tag}>#Mon</Text>
+              <Text style={styles.tag}>#Tuesday</Text>
+            </View>
           </View>
-          <View style={styles.tags} >
-            <Text style={styles.tag} >#Friday</Text>
-            <Text style={styles.tag} >#Saturday</Text>
-            <Text style={styles.tag}>#Sunday</Text>
-            <Text style={styles.tag}>#Mon</Text>
-            <Text style={styles.tag}>#Tuesday</Text>
+
+          <View style={styles.line} />
+
+          <View style={styles.latest} >
+            <View style={styles.header} >
+              <Text style={styles.headerText} >Latest News</Text>
+              <Text style={styles.View} >View All</Text>
+            </View>
+            <ScrollView horizontal={true} style={styles.scroll}  >
+              <Latest isVideo={false} />
+              <Latest isVideo={true} />
+            </ScrollView>
           </View>
-        </View>
 
-        <View style={styles.line} />
+          <View style={styles.line} />
 
-        <View style={styles.latest} >
-          <View style={styles.header} >
-            <Text style={styles.headerText} >Latest News</Text>
-            <Text style={styles.View} >View All</Text>
+          <View style={styles.recommendation} >
+            <View style={styles.header} >
+              <Text style={styles.headerText} >Recommendation Topic</Text>
+              <Text style={styles.View} >View All</Text>
+            </View>
+            <Recommend />
+            <Recommend />
           </View>
-          <ScrollView horizontal={true} style={styles.scroll}  >
-            <Latest isVideo={false} />
-            <Latest isVideo={true} />
-          </ScrollView>
-        </View>
-
-                <View style={styles.line} />
-
-        <View style={styles.recommendation} >
-                    <View style={styles.header} >
-            <Text style={styles.headerText} >Recommendation Topic</Text>
-            <Text style={styles.View} >View All</Text>
-          </View>
-          <Recommend />
-          <Recommend />
-        </View>
-      </ScrollView>
+        </ScrollView>
 
 
         <Navbar />
@@ -148,7 +148,8 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    maxHeight: 590,
+    height: '67%',
+    width: '100%',
   },
   line: {
     width: '100%',

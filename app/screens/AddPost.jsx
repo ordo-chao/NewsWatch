@@ -5,11 +5,40 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {
   useNavigation,
 } from '@react-navigation/native';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  runOnJS,
+} from 'react-native-reanimated';
+
 
 const App = () => {
 const navigation = useNavigation();
+const translateX = useSharedValue(0);
+
+  const gesture = Gesture.Pan()
+    .onUpdate((event) => {
+      translateX.value = event.translationX;
+    })
+    .onEnd((event) => {
+      if (event.translationX < -100) {
+        runOnJS(navigation.navigate)('Blog');
+      } else if (event.translationX > 100) {
+        runOnJS(navigation.navigate)('Settings');
+      } else {
+        translateX.value = 0;
+      }
+    });
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: translateX.value * 0.3 }],
+  }));
+
   return (
-    <SafeAreaProvider>
+   <GestureDetector gesture={gesture}>
+    <Animated.View style={[styles.container, animatedStyle]}>
+       <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
         <StatusBar
           barStyle="light-content"
@@ -63,6 +92,8 @@ const navigation = useNavigation();
 
       </SafeAreaView>
     </SafeAreaProvider>
+    </Animated.View>
+   </GestureDetector>
   );
 };
 

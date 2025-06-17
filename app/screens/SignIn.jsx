@@ -61,11 +61,11 @@ const navigation = useNavigation();
           </View>
 
           <View style={styles.social} >
-            <View style={styles.icon} ><Fontisto name="email" size={20} color="rgb(0, 102, 255)" /></View>
-            <View style={styles.icon}><FontAwesome name="google" size={20} color="rgb(0, 102, 255)" /></View>
-            <View style={styles.icon}><FontAwesome name="facebook" size={20} color="rgb(0, 102, 255)" /></View>
-            <View style={styles.icon}><Feather name="twitter" size={20} color="rgb(0, 102, 255)" /></View>
-            <View style={styles.icon}><AntDesign name="apple-o" size={20} color="rgb(0, 102, 255)" /></View>
+            <View style={styles.icon} ><Fontisto name="email" size={20} color="black" /></View>
+            <View style={styles.icon}><FontAwesome name="google" size={20} color="black" /></View>
+            <View style={styles.icon}><FontAwesome name="facebook" size={20} color="black" /></View>
+            <View style={styles.icon}><Feather name="twitter" size={20} color="black" /></View>
+            <View style={styles.icon}><AntDesign name="apple-o" size={20} color="black" /></View>
           </View>
 
           <View style={styles.agree} >

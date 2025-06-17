@@ -1,2 +1,9 @@
 BUNDLE_PATH: "vendor/bundle"
 BUNDLE_FORCE_RUBY_PLATFORM: 1
+
+// auth0Config.js
+export const auth0Config = {
+  domain: 'dev-idyg4s6ppjwvacl4.us.auth0.com',
+  clientId: 'Z6ZlNPFlzhtEi43j74Gt9X2fosb8bj38',
+};
+
