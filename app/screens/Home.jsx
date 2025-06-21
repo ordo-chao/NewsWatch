@@ -17,6 +17,7 @@ import Navbar from '../Components/Navbar';
 import Card from '../Components/Card';
 import Poll from '../Components/Poll';
 import Post from '../Components/Post';
+import Comments from '../Components/Comments';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -26,6 +27,7 @@ const App = () => {
   const [notifications, setNotifications] = useState(false);
   const [loading, setLoading] = useState(true);
   const [Data, setData] = useState([]);
+  const [isComment, setComment] = useState(true);
 
   const getPost = async () => {
     try {
@@ -33,7 +35,7 @@ const App = () => {
       const response = await fetch('http://192.168.88.58:3003/posts/getPosts/');
       const data = await response.json();
       console.log(data);
-      if(data.message === 'No posts found') {setData([]); setLoading(false); return;}
+      if (data.message === 'No posts found') { setData([]); setLoading(false); return; }
       setData(data.message);
       setLoading(false);
     } catch (error) {
@@ -102,7 +104,7 @@ const App = () => {
           <Poll isVideo={false} /> */}
                 {Data?.length > 0 ? (
                   Data.map((item, index) => (
-                    <Post key={item.id || index} post={item} isVideo={false} />
+                    <Post key={item.id || index} post={item} isVideo={false} setComment={setComment} comment={isComment} />
                   ))
                 ) : (
                   <Text>No posts found.</Text>
@@ -111,9 +113,10 @@ const App = () => {
                 <View style={{ height: 50 }} />
               </ScrollView>
 
-              <Navbar />
             </>
           )}
+          {isComment && <Comments setComment={setComment} />}
+          {!isComment && <Navbar />}
         </>
       </SafeAreaView>
     </SafeAreaProvider>

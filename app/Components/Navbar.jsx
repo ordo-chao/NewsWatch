@@ -58,6 +58,16 @@ const styles = StyleSheet.create({
     width: '100%',
     left: '3%',
     maxHeight: 70,
+    zIndex: 1,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   option: {
     alignItems: 'center',

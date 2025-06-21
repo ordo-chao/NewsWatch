@@ -13,13 +13,14 @@ import {
 } from '@react-navigation/native';
 
 
+
 const App = (props) => {
   const navigation = useNavigation();
   const playerRef = useRef(null);
   const [isLike, setLike] = useState(false);
-  const [isComment, setComment] = useState(false);
   const data = props.post;
   const [likeLoader, setlikeLoader] = useState(false);
+
 
   const limitWords = (text, limit) => {
     const words = text.trim().split(/\s+/);
@@ -101,7 +102,7 @@ const App = (props) => {
             <ActivityIndicator size="small" color="rgb(0, 162, 255)" /> :
             <Pressable onPress={() => { likePost(); }} ><FontAwesome name={isLike ? 'heart' : 'heart-o'} size={20} color={isLike ? 'red' : 'rgb(0, 162, 255)'} /></Pressable>
           }
-          <Pressable onPress={() => setComment(!isComment)} ><FontAwesome name={isComment ? 'comment' : 'comment-o'} size={20} color={isComment ? 'rgb(0, 255, 21)' : 'rgb(0, 162, 255)'} /></Pressable>
+          <Pressable onPress={() => {props.setComment(true);}} ><FontAwesome name={'comment-o'} size={20} color={'rgb(0, 162, 255)'} /></Pressable>
           <MaterialCommunityIcons name="share-outline" size={20} color="rgb(0, 162, 255)" />
           {data.type === 'sponsored' ?
             <View style={styles.sponsor} >
@@ -227,6 +228,8 @@ const styles = StyleSheet.create(
 App.propTypes = {
   isVideo: PropTypes.bool.isRequired,
   post: PropTypes.object.isRequired,
+  setComment: PropTypes.func.isRequired,
+  comment: PropTypes.bool.isRequired,
 };
 
 export default App;

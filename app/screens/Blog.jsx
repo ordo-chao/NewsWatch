@@ -7,6 +7,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useState } from 'react';
+import Comments from '../Components/Comments';
 
 
 
@@ -26,6 +27,7 @@ const App = () => {
   const data = post.post;
   const [isLike, setLike] = useState(post.like);
   const [likeLoader, setlikeLoader] = useState(false);
+  const [isComment, setComment] = useState(true);
 
   const toggleLike = () => {
     const updatedLike = !isLike;
@@ -123,10 +125,12 @@ const App = () => {
               })} </Text>
             </View>
             <View style={styles.stats}>
-              <View style={styles.statsView} >
+              <Pressable onPress={() => setComment(true)} >
+                <View style={styles.statsView} >
                 <MaterialCommunityIcons name="comment-outline" size={20} color="black" />
                 <Text style={styles.statsText} >{data.comments} Comments</Text>
               </View>
+              </Pressable>
               <View style={styles.statsView}>
                 {likeLoader ?
                   <ActivityIndicator size="small" color="rgb(0, 162, 255)" /> :
@@ -145,6 +149,7 @@ const App = () => {
             </Text>
           </View>
         </ScrollView>
+          {isComment && <Comments setComment={setComment} />}
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -230,6 +235,7 @@ const styles = StyleSheet.create({
   blogContainer:
   {
     flex: 1,
+    backgroundColor: 'aqua',
   },
   blogText: {
     fontSize: 14,

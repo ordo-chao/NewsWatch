@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
@@ -31,7 +32,7 @@ const Layout = () => {
           <Stack.Screen name="Password" component={Password} />
           <Stack.Screen name="City" component={City} />
           <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Blog" component={Blog} options={{ animation: 'slide_from_bottom', presentation: 'transparentModal' , cardStyle: { backgroundColor: 'rgba(0,0,0,0.5)' } }}  />
+          <Stack.Screen name="Blog" component={Blog} options={{ animation: 'slide_from_bottom', presentation: 'transparentModal', cardStyle: { backgroundColor: 'rgba(0,0,0,0.5)' } }} />
           <Stack.Screen name="Settings" component={Settings} />
           <Stack.Screen name="Search" component={Search} />
           <Stack.Screen name="AddPost" component={AddPost} />
