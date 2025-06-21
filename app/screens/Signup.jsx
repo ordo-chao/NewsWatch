@@ -1,114 +1,197 @@
-import { StyleSheet, Text, View, StatusBar , TextInput } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  TextInput,
+  ActivityIndicator,
+} from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import RadioGroup from 'react-native-radio-buttons-group';
-import React, { useMemo, useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-
-import {
-  useNavigation,
-} from '@react-navigation/native';
-
-
+import { useNavigation } from '@react-navigation/native';
+import ErrorDiv from '../Components/Error';
 
 const App = () => {
-const navigation = useNavigation();
+  const navigation = useNavigation();
+
   const radioButtons = useMemo(() => ([
-        {
-            id: '1', // acts as primary key, should be unique and non-empty string
-            label: 'Media Reporter',
-            value: 'Reporter',
-            size : 15,
-        },
-        {
-            id: '2',
-            label: 'Visitor',
-            value: 'Visitor',
-            size : 15,
-        },
-    ]), []);
-    const [selectedId, setSelectedId] = useState();
+    {
+      id: '1',
+      label: 'Reporter',
+      value: 'Reporter',
+      size: 15,
+    },
+    {
+      id: '2',
+      label: 'Reader',
+      value: 'Reader',
+      size: 15,
+    },
+  ]), []);
+
+  const [selectedId, setSelectedId] = useState();
+  const [user, setUser] = useState({
+    firstname: '',
+    lastname: '',
+    username: '',
+    email: '',
+    phone: '',
+    password: '',
+    role: '',
+    city: '',
+    state: '',
+    country: '',
+    photour: '',
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [Error, setError] = useState({
+    Error: false,
+    message: '',
+  });
+
+  const signUp = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('http://192.168.88.58:3003/accounts/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user),
+      });
+
+      if (!response.ok) {
+        let errorMessage = 'Something went wrong';
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.message || errorMessage;
+        } catch (_) {}
+
+        setError({ Error: true, message: errorMessage });
+        setLoading(false);
+        navigation.navigate('Login');
+        return;
+      }
+
+      const text = await response.text();
+      const data = text ? JSON.parse(text) : {};
+      console.log(data);
+      setLoading(false);
+      navigation.navigate('Home');
+    } catch (error) {
+      setLoading(false);
+      setError({ Error: true, message: error.message });
+    }
+  };
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-        <StatusBar
-          barStyle="light-content"
-          backgroundColor="black"
-          translucent={true}
-        />
-          <View style={styles.logo} >
-            <Text style={styles.logoText} >News</Text>
-            <Text style={styles.logoTex} >Watch</Text>
+        <StatusBar barStyle="light-content" backgroundColor="black" translucent={true} />
+        <>
+          {Error.Error && <ErrorDiv Error={Error.message} setError={setError} />}
+
+          <View style={styles.logo}>
+            <Text style={styles.logoText}>News</Text>
+            <Text style={styles.logoTex}>Watch</Text>
           </View>
 
-          <View style={styles.form} >
+          <View style={styles.form}>
             <TextInput
               placeholder="Username"
-              placeholderTextColor={'rgb(138, 136, 136)'}
+              placeholderTextColor="rgb(138, 136, 136)"
               style={styles.input}
+              onChangeText={(text) => setUser({ ...user, username: text })}
             />
-                        <TextInput
+            <TextInput
               placeholder="Email"
-              placeholderTextColor={'rgb(138, 136, 136)'}
+              placeholderTextColor="rgb(138, 136, 136)"
               style={styles.input}
+              keyboardType="email-address"
+              onChangeText={(text) => setUser({ ...user, email: text })}
             />
             <TextInput
               placeholder="Number"
-              placeholderTextColor={'rgb(138, 136, 136)'}
+              placeholderTextColor="rgb(138, 136, 136)"
               style={styles.input}
-              keyboardType={'numeric'}
+              keyboardType="numeric"
+              onChangeText={(text) => setUser({ ...user, phone: text })}
             />
             <TextInput
               placeholder="Password"
-              placeholderTextColor={'rgb(138, 136, 136)'}
+              placeholderTextColor="rgb(138, 136, 136)"
               style={styles.input}
               secureTextEntry={true}
-              keyboardType={'password'}
+              onChangeText={(text) => setUser({ ...user, password: text })}
             />
           </View>
-          <View style={styles.userType} >
-            <Text style={styles.userTypeText} >I am a</Text>
-            <View>
-               <RadioGroup radioButtons={radioButtons} onPress={setSelectedId} selectedId={selectedId} layout={'row'} />
+
+          <View style={styles.userType}>
+            <Text style={styles.userTypeText}>I am a</Text>
+            <RadioGroup
+              radioButtons={radioButtons}
+              onPress={(id) => {
+                setSelectedId(id);
+                const selected = radioButtons.find((r) => r.id === id);
+                setUser({ ...user, role: selected?.value || '' });
+              }}
+              selectedId={selectedId}
+              layout="row"
+            />
+          </View>
+
+          <View style={styles.button}>
+            {loading ? (
+              <ActivityIndicator size="large" color="#0000ff" />
+            ) : (
+              <Text style={styles.buttonText} onPress={() => navigation.navigate('Home')}>
+                Sign Up
+              </Text>
+            )}
+          </View>
+
+          <View style={styles.or}>
+            <View style={styles.line} />
+            <Text style={styles.orText}>or sign up with </Text>
+            <View style={styles.line} />
+          </View>
+
+          <View style={styles.social}>
+            <View style={styles.icon}>
+              <Fontisto name="email" size={20} color="black" />
+            </View>
+            <View style={styles.icon}>
+              <FontAwesome name="google" size={20} color="black" />
+            </View>
+            <View style={styles.icon}>
+              <FontAwesome name="facebook" size={20} color="black" />
+            </View>
+            <View style={styles.icon}>
+              <Feather name="twitter" size={20} color="black" />
+            </View>
+            <View style={styles.icon}>
+              <AntDesign name="apple-o" size={20} color="black" />
             </View>
           </View>
-          <View style={styles.button} >
-            <Text style={styles.buttonText} onPress={() => navigation.navigate('SignIn')} >Sign Up</Text>
-          </View>
 
-          <View style={styles.or} >
-            <View style={styles.line} />
-            <Text style={styles.orText} >or sign up with </Text>
-            <View style={styles.line} />
+          <View style={styles.agree}>
+            <Text style={styles.agreeText}>
+              By signing up you agree to NewsWatch you are accepting our{' '}
+              <Text style={styles.terms}>terms and conditions</Text>
+            </Text>
           </View>
-
-          <View style={styles.social} >
-            <View style={styles.icon} ><Fontisto name="email" size={20} color="black" /></View>
-            <View style={styles.icon}><FontAwesome name="google" size={20} color="black" /></View>
-            <View style={styles.icon}><FontAwesome name="facebook" size={20} color="black" /></View>
-            <View style={styles.icon}><Feather name="twitter" size={20} color="black" /></View>
-            <View style={styles.icon}><AntDesign name="apple-o" size={20} color="black" /></View>
-          </View>
-
-          <View style={styles.agree} >
-            <Text style={styles.agreeText} >By signing up you agree to NewsWatch you are accepting our <Text style={styles.terms} >terms and conditions</Text></Text>
-          </View>
+        </>
       </SafeAreaView>
     </SafeAreaProvider>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  header: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  container: { flex: 1, backgroundColor: 'white' },
   logo: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -124,14 +207,6 @@ const styles = StyleSheet.create({
     fontSize: 35,
     fontWeight: 'bold',
     color: 'rgb(87, 89, 92)',
-  },
-  description: {
-    fontSize: 12,
-    fontWeight: 'light',
-    color: 'rgb(138, 136, 136)',
-    textAlign: 'center',
-    width: 300,
-    marginTop: 5,
   },
   form: {
     flex: 1,
@@ -164,7 +239,6 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '100%',
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 15,
@@ -172,8 +246,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 15,
-    fontWeight: 'light',
-    color: 'rgb(255, 255, 255)',
+    color: 'white',
     backgroundColor: 'rgb(84, 151, 252)',
     width: '40%',
     padding: 10,
@@ -186,21 +259,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(83, 83, 83)',
   },
   or: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     gap: 10,
     marginTop: 10,
   },
-  orText:
-  {
+  orText: {
     fontSize: 13,
-    fontWeight: 'light',
     color: 'rgb(83, 83, 83)',
   },
   social: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -211,7 +280,6 @@ const styles = StyleSheet.create({
     padding: 5,
     height: 35,
     width: 40,
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
@@ -219,7 +287,6 @@ const styles = StyleSheet.create({
     borderColor: 'rgb(83, 83, 83)',
   },
   agree: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -227,7 +294,6 @@ const styles = StyleSheet.create({
   },
   agreeText: {
     fontSize: 12,
-    fontWeight: 'light',
     color: 'rgb(83, 83, 83)',
     textAlign: 'center',
     width: 350,

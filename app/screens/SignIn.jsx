@@ -1,17 +1,72 @@
-import { StyleSheet, Text, View, StatusBar , TextInput } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, TextInput, ActivityIndicator } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-
+import { useState } from 'react';
 import {
   useNavigation,
 } from '@react-navigation/native';
+import ErrorDiv from '../Components/Error';
 
 const App = () => {
-const navigation = useNavigation();
+  const navigation = useNavigation();
+
+  const [user, setUser] = useState({
+    username: '',
+    email: '',
+    password: '',
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [Error, setError] = useState({
+    Error: false,
+    message: '',
+  });
+  const [inputError , setinputError] = useState('');
+
+  const signIn = async () => {
+    try {
+      setLoading(true);
+      setinputError('');
+      const response = await fetch('http://192.168.88.58:3003/accounts/signIn', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user),
+      });
+
+      if (response.status === 500) {
+        try {
+          const errorData = await response.json();
+          let errorMessage = errorData.message;
+          setError({ Error: true, message: errorMessage });
+        } catch (_) { }
+
+        setLoading(false);
+        navigation.navigate('Login');
+        return;
+      }
+
+      const text = await response.text();
+      const data = text ? JSON.parse(text) : {};
+      console.log(data);
+      if (data.error) {
+        if(data.error === 'Wrong username') {setinputError('username');}
+        else if(data.error === 'Wrong email') {setinputError('email');}
+        else if(data.error === 'Wrong password') {setinputError('password');}
+        else{setError({ Error: true, message: data.error });}
+        setLoading(false);
+        return;
+      }
+      setLoading(false);
+      navigation.navigate('Home');
+    } catch (error) {
+      setLoading(false);
+      setError({ Error: true, message: error.message });
+    }
+  };
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
@@ -20,57 +75,74 @@ const navigation = useNavigation();
           backgroundColor="black"
           translucent={true}
         />
-          <View style={styles.logo} >
-            <Text style={styles.logoText} >News</Text>
-            <Text style={styles.logoTex} >Watch</Text>
-          </View>
+        {Error.Error && <ErrorDiv Error={Error.message} setError={setError} />}
+        <View style={styles.logo} >
+          <Text style={styles.logoText} >News</Text>
+          <Text style={styles.logoTex} >Watch</Text>
+        </View>
 
-          <View style={styles.form} >
-            <View>
-              <Text style={styles.label} >Username</Text>
-              <TextInput
-              style={styles.input}
+        <View style={styles.form} >
+          <View>
+            <Text style={styles.label} >Username</Text>
+            <TextInput
+              style={inputError === 'username' ? styles.inputerror : styles.input}
+              keyboardType={'default'}
+              onChangeText={(text) => setUser({ ...user, username: text })}
+              required
             />
-            </View>
-            <View>
-              <Text style={styles.label} >Email</Text>
-              <TextInput
-              style={styles.input}
-              keyboardType={'numeric'}
+            {inputError === 'username' && <Text style={styles.red} >Wrong Username</Text>}
+          </View>
+          <View>
+            <Text style={styles.label} >Email</Text>
+            <TextInput
+              style={ inputError === 'email' ? styles.inputerror : styles.input}
+              keyboardType={'email-address'}
+              onChangeText={(text) => setUser({ ...user, email: text })}
+              required
             />
-            </View>
-            <View>
-              <Text style={styles.label} >Password</Text>
-              <TextInput
-              style={styles.input}
+            {inputError === 'email' && <Text style={styles.red} >Wrong Email</Text>}
+          </View>
+          <View>
+            <Text style={styles.label} >Password</Text>
+            <TextInput
+              style={ inputError === 'password' ? styles.inputerror : styles.input}
               secureTextEntry={true}
-              keyboardType={'password'}
+              keyboardType={inputError === 'password' ? 'visible-password' : 'password'}
+              onChangeText={(text) => setUser({ ...user, password: text })}
+              required
             />
+            {inputError === 'password' && <Text style={styles.red} >Wrong Password</Text>}
             <Text style={styles.forgot} onPress={() => navigation.navigate('Verify')}  >Forgot Password?</Text>
-            </View>
           </View>
+        </View>
 
-          <View style={styles.button} >
-            <Text style={styles.buttonText} onPress={() => navigation.navigate('City')} >Sign In</Text>
-          </View>
+        <View style={styles.button} >
+          {loading ? (
+            <ActivityIndicator size="large" color="#0000ff" />
+          ) : (
+            <Text style={styles.buttonText} onPress={signIn}>
+              Sign In
+            </Text>
+          )}
+        </View>
 
-          <View style={styles.or} >
-            <View style={styles.line} />
-            <Text style={styles.orText} >or sign in with </Text>
-            <View style={styles.line} />
-          </View>
+        <View style={styles.or} >
+          <View style={styles.line} />
+          <Text style={styles.orText} >or sign in with </Text>
+          <View style={styles.line} />
+        </View>
 
-          <View style={styles.social} >
-            <View style={styles.icon} ><Fontisto name="email" size={20} color="black" /></View>
-            <View style={styles.icon}><FontAwesome name="google" size={20} color="black" /></View>
-            <View style={styles.icon}><FontAwesome name="facebook" size={20} color="black" /></View>
-            <View style={styles.icon}><Feather name="twitter" size={20} color="black" /></View>
-            <View style={styles.icon}><AntDesign name="apple-o" size={20} color="black" /></View>
-          </View>
+        <View style={styles.social} >
+          <View style={styles.icon} ><Fontisto name="email" size={20} color="black" /></View>
+          <View style={styles.icon}><FontAwesome name="google" size={20} color="black" /></View>
+          <View style={styles.icon}><FontAwesome name="facebook" size={20} color="black" /></View>
+          <View style={styles.icon}><Feather name="twitter" size={20} color="black" /></View>
+          <View style={styles.icon}><AntDesign name="apple-o" size={20} color="black" /></View>
+        </View>
 
-          <View style={styles.agree} >
-            <Text style={styles.agreeText} >Don't have an account? <Text style={styles.terms} onPress={() => navigation.navigate('Signup')} >Register</Text></Text>
-          </View>
+        <View style={styles.agree} >
+          <Text style={styles.agreeText} >Don't have an account? <Text style={styles.terms} onPress={() => navigation.navigate('Signup')} >Register</Text></Text>
+        </View>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -227,6 +299,28 @@ const styles = StyleSheet.create({
     color: 'rgb(83, 83, 83)',
     marginLeft: 10,
     textAlign: 'right',
+  },
+  red:
+  {
+        fontSize: 11,
+    fontWeight: 'light',
+    color: 'rgb(255, 0, 0)',
+    marginLeft: 10,
+    textAlign: 'left',
+    marginBottom: 10,
+  },
+  inputerror: {
+    height: 40,
+    margin: 12,
+    width: 300,
+    borderBottomColor: 'rgb(255, 0, 0)',
+    borderBottomWidth: 1,
+    padding: 10,
+    paddingLeft: 0,
+    color: 'black',
+    fontSize: 15,
+    marginTop: 0,
+    marginBottom: 10,
   },
 });
 

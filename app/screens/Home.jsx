@@ -1,6 +1,14 @@
-import { StyleSheet, Text, View, StatusBar, Pressable, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  Pressable,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -10,14 +18,33 @@ import Card from '../Components/Card';
 import Poll from '../Components/Poll';
 import Post from '../Components/Post';
 
-import {
-  useNavigation,
-} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 const App = () => {
   const navigation = useNavigation();
   const [filter, setFilter] = useState('Popular');
   const [notifications, setNotifications] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [Data, setData] = useState([]);
+
+  const getPost = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('http://192.168.88.58:3003/posts/getPosts/');
+      const data = await response.json();
+      console.log(data);
+      if(data.message === 'No posts found') {setData([]); setLoading(false); return;}
+      setData(data.message);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getPost();
+  }, []);
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
@@ -26,43 +53,68 @@ const App = () => {
           backgroundColor="black"
           translucent={true}
         />
-        <View style={styles.header} >
-          <View style={styles.left} >
-            <Pressable><Entypo name="menu" size={25} color="rgb(0, 162, 255)" /></Pressable>
-            <Pressable onPress={() => navigation.navigate('City')} style={styles.location} >
-              <Entypo name="location-pin" size={20} color="black" />
-              <Text style={styles.locationText} >G.T Road, Kolkata</Text>
-            </Pressable>
-          </View>
-          <View style={styles.right} >
-            <Pressable style={styles.star} >
-              <View style={styles.starIcon} ><AntDesign name="star" size={15} color="yellow" /></View>
-              <Text style={styles.starText} >599</Text>
-            </Pressable>
-           <Pressable onPress={() => navigation.navigate('Chats')} > <MaterialIcons name="message" size={25} color="rgb(0, 162, 255)" /></Pressable>
-          </View>
-        </View>
+        <>
+          {loading ? (
+            <ActivityIndicator size="large" color="black" />
+          ) : (
+            <>
+              <View style={styles.header}>
+                <View style={styles.left}>
+                  <Pressable>
+                    <Entypo name="menu" size={25} color="rgb(0, 162, 255)" />
+                  </Pressable>
+                  <Pressable
+                    onPress={() => navigation.navigate('City')}
+                    style={styles.location}
+                  >
+                    <Entypo name="location-pin" size={20} color="black" />
+                    <Text style={styles.locationText}>G.T Road, Kolkata</Text>
+                  </Pressable>
+                </View>
+                <View style={styles.right}>
+                  <Pressable style={styles.star}>
+                    <View style={styles.starIcon}>
+                      <AntDesign name="star" size={15} color="yellow" />
+                    </View>
+                    <Text style={styles.starText}>599</Text>
+                  </Pressable>
+                  <Pressable onPress={() => navigation.navigate('Chats')}>
+                    <MaterialIcons name="message" size={25} color="rgb(0, 162, 255)" />
+                  </Pressable>
+                </View>
+              </View>
 
-        <ScrollView style={styles.filters} horizontal={true} >
-          <Pressable onPress={() => setFilter('Popular')} ><Text style={filter === 'Popular' ? styles.Activefilter : styles.filter} >Popular</Text> <View style={filter === 'Popular' ? styles.underline : styles.null} /></Pressable>
-          <Pressable onPress={() => setFilter('All')} ><Text style={filter === 'All' ? styles.Activefilter : styles.filter}>All</Text> <View style={filter === 'All' ? styles.underline : styles.null} /> </Pressable>
-          <Pressable onPress={() => setFilter('Politics')} ><Text style={filter === 'Politics' ? styles.Activefilter : styles.filter}>Politics</Text> <View style={filter === 'Politics' ? styles.underline : styles.null} /></Pressable>
-          <Pressable onPress={() => setFilter('Tech')} ><Text style={filter === 'Tech' ? styles.Activefilter : styles.filter}>Tech</Text> <View style={filter === 'Tech' ? styles.underline : styles.null} /> </Pressable>
-          <Pressable onPress={() => setFilter('Healthy')} ><Text style={filter === 'Healthy' ? styles.Activefilter : styles.filter}>Healthy</Text> <View style={filter === 'Healthy' ? styles.underline : styles.null} /></Pressable>
-          <Pressable onPress={() => setFilter('Science')} ><Text style={filter === 'Science' ? styles.Activefilter : styles.filter}>Science</Text> <View style={filter === 'Science' ? styles.underline : styles.null} /></Pressable>
-        </ScrollView>
+              <ScrollView style={styles.filters} horizontal={true}>
+                {['Popular', 'All', 'Politics', 'Tech', 'Healthy', 'Science'].map((item) => (
+                  <Pressable key={item} onPress={() => setFilter(item)}>
+                    <Text style={filter === item ? styles.Activefilter : styles.filter}>
+                      {item}
+                    </Text>
+                    {filter === item ? <View style={styles.underline} /> : null}
+                  </Pressable>
+                ))}
+              </ScrollView>
 
-        <ScrollView style={styles.content} >
-          <View style={styles.cards} >
+              <ScrollView style={styles.content}  >
+                {/* <View style={styles.cards}>
             <Card />
           </View>
-          <Poll isVideo={false}  />
-          <Post isVideo={false} />
-          <Post isVideo={true} />
-        </ScrollView>
+          <Poll isVideo={false} /> */}
+                {Data?.length > 0 ? (
+                  Data.map((item, index) => (
+                    <Post key={item.id || index} post={item} isVideo={false} />
+                  ))
+                ) : (
+                  <Text>No posts found.</Text>
+                )}
 
+                <View style={{ height: 50 }} />
+              </ScrollView>
 
-        <Navbar />
+              <Navbar />
+            </>
+          )}
+        </>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -75,41 +127,32 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   header: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 10,
   },
   left: {
-    display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     gap: 15,
   },
-  right:
-  {
-    display: 'flex',
+  right: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     gap: 15,
   },
   location: {
-    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     gap: 3,
   },
-  locationText:
-  {
+  locationText: {
     fontSize: 12,
     color: 'rgb(93, 94, 95)',
     fontWeight: 'bold',
   },
   star: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -121,8 +164,6 @@ const styles = StyleSheet.create({
     width: 70,
   },
   starIcon: {
-    display: 'flex',
-    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'gold',
@@ -136,52 +177,42 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: 'rgb(93, 94, 95)',
   },
-  filters:
-  {
+  filters: {
     marginTop: 20,
     marginBottom: 10,
-    display: 'flex',
-    gap: 10,
     maxHeight: 30,
   },
-  filter:
-  {
+  filter: {
     fontSize: 12,
     color: 'rgb(93, 94, 95)',
     marginRight: 30,
   },
-  Activefilter:
-  {
+  Activefilter: {
     fontSize: 12,
     color: 'black',
     fontWeight: 'bold',
     marginRight: 30,
   },
-  underline:
-  {
+  underline: {
     width: '30%',
     height: 2,
     backgroundColor: 'rgb(0, 162, 255)',
     marginTop: 5,
     borderRadius: 50,
   },
-  content:
-  {
+  content: {
     marginTop: 10,
-    display: 'flex',
     flexDirection: 'column',
     gap: 10,
     height: '67%',
     width: '100%',
+    paddingBottom: 100,
   },
-  cards:
-  {
-    display: 'flex',
+  cards: {
     flexDirection: 'row',
     gap: 10,
     height: 200,
   },
-
 });
 
 export default App;
